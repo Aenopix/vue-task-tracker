@@ -1,33 +1,109 @@
+/* Reset some default styling */
+body,
+h1,
+h2,
+p,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+/* Basic styling for the entire app */
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+  max-width: 600px;
+  margin: 20px auto;
+  font-family: 'Arial', sans-serif;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+/* Styling for the task form */
+.task-form {
+  margin-bottom: 20px;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.task-form label {
+  display: block;
+  margin-bottom: 5px;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+.task-form input,
+.task-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+.task-form select {
+  width: 100%;
+  display: block;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.task-form button {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.task-list {
+  width: 100%;
+  list-style-type: none;
+}
+
+.task-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  position: relative;
+}
+
+.task-item h3 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.task-item p {
+  margin-bottom: 10px;
+}
+
+.task-item .status {
+  font-weight: bold;
+}
+
+/* Styling for the container of edit and delete buttons inside task item */
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* Styling for edit and delete buttons inside task item */
+.edit-btn,
+.delete-btn,
+.done-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 4px 10px;
+  cursor: pointer;
+  border: none;
+  margin-bottom: 4px;
+  width: 100%;
+  /* Set the same width for both buttons */
+}
+
+.delete-btn {
+  background-color: #dc3545;
+}
+
+.done-btn {
+  background-color: #4caf50;
 }
