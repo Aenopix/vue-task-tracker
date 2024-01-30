@@ -32,15 +32,25 @@ const formData = ref({
   title: ''
 })
 
+const isEditing = ref(false)
 const handleSubmit = () => {
-  const newTask = {
-    id: Date.now(),
-    description: formData.value.description,
-    status: formData.value.status,
-    title: formData.value.title
-  }
+  if (formData.value.id) {
+    const editedTaskIndex = taskList.value.findIndex(task => task.id === formData.value.id);
 
-  taskList.value = [...taskList.value, newTask]
+    if (editedTaskIndex !== -1) {
+      taskList.value[editedTaskIndex] = { ...formData.value };
+      isEditing.value = false
+    }
+  } else {
+    const newTask = {
+      id: Date.now(),
+      description: formData.value.description,
+      status: formData.value.status,
+      title: formData.value.title
+    };
+
+    taskList.value = [...taskList.value, newTask];
+  }
 
   formData.value = {
     id: null,
@@ -55,7 +65,8 @@ const handleDeleteTask = (taskId) => {
 }
 
 const handleEditTask = (task) => {
-  formData.value = {...task}
+  isEditing.value = true
+  formData.value = { ...task }
 }
 
 const handleDoneTask = (taskId) => {
@@ -80,7 +91,7 @@ const handleDoneTask = (taskId) => {
         <option value="in-progress">In Progress</option>
         <option value="done">Done</option>
       </select>
-      <button>Create Task</button>
+      <button>{{ isEditing ? 'Update' : 'Create' }}</button>
     </form>
 
     <ul class="task-list" v-auto-animate>

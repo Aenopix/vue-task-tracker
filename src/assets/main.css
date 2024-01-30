@@ -68,6 +68,10 @@ li {
 
 .task-item p {
   margin-bottom: 10px;
+  margin-right: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
 }
 
 .task-item .status {
