@@ -43,10 +43,26 @@ const handleSubmit = () => {
   taskList.value = [...taskList.value, newTask]
 
   formData.value = {
-    id: 0,
+    id: null,
     description: '',
     status: 'not-done',
     title: ''
+  }
+}
+
+const handleDeleteTask = (taskId) => {
+  taskList.value = taskList.value.filter(task => task.id !== taskId)
+}
+
+const handleEditTask = (task) => {
+  formData.value = {...task}
+}
+
+const handleDoneTask = (taskId) => {
+  const taskIndex = taskList.value.findIndex(task => task.id === taskId)
+
+  if (taskIndex !== -1) {
+    taskList.value[taskIndex].status = 'done'
   }
 }
 </script>
@@ -64,19 +80,19 @@ const handleSubmit = () => {
         <option value="in-progress">In Progress</option>
         <option value="done">Done</option>
       </select>
-
       <button>Create Task</button>
     </form>
 
     <ul class="task-list" v-auto-animate>
       <li class="task-item" v-for="task in taskList" :key="task.id">
+        <span class="task-id">{{ task.id }}</span>
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
         <span class="status">{{ statusEmoji(task.status) }}</span>
         <div class="buttons-container">
-          <button class="edit-btn">Edit</button>
-          <button class="delete-btn">Delete</button>
-          <button class="done-btn">Done</button>
+          <button class="edit-btn" @click="handleEditTask(task)">Edit</button>
+          <button class="delete-btn" @click="handleDeleteTask(task.id)">Delete</button>
+          <button class="done-btn" @click="handleDoneTask(task.id)">Done</button>
         </div>
       </li>
     </ul>
