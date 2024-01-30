@@ -1,6 +1,6 @@
 # vue-task-tracker
 
-This template should help get you started developing with Vue 3 in Vite.
+![vue-task-tracker-front](https://github.com/Aenopix/vue-task-tracker/assets/857802/2b24ef52-882a-435a-a501-438d67ed059a)
 
 ## Recommended IDE Setup
 
