@@ -4,7 +4,7 @@ import { vAutoAnimate } from '@formkit/auto-animate'
 import useTaskApi from '@/composables/useTaskApi'
 import Task from './components/Task.vue';
 
-const { taskList, fetchTasks, createTask } = useTaskApi()
+const { taskList, fetchTasks, createTask, editTask, deleteTask } = useTaskApi()
 
 const formData = ref({
   id: 0,
@@ -16,16 +16,13 @@ const formData = ref({
 const isEditing = ref(false)
 const handleSubmit = async () => {
   if (formData.value.id) {
-    const editedTaskIndex = taskList.value.findIndex(task => task.id === formData.value.id);
+    // edit task
+    await editTask(formData.value.id, formData.value);
+    await fetchTasks();
 
-    if (editedTaskIndex !== -1) {
-      taskList.value[editedTaskIndex] = { ...formData.value };
-      isEditing.value = false
-    } else {
-      alert(`No task found with id ${formData.value.id}, edit not succesful.`)
-      isEditing.value = false
-    }
+    isEditing.value = false;
   } else {
+    // create task
     const newTask = {
       description: formData.value.description,
       status: formData.value.status,
@@ -34,7 +31,6 @@ const handleSubmit = async () => {
 
     await createTask(newTask)
     await fetchTasks()
-    // taskList.value = [...taskList.value, newTask];
   }
 
   formData.value = {
@@ -45,8 +41,9 @@ const handleSubmit = async () => {
   }
 }
 
-const handleDeleteTask = (taskId) => {
-  taskList.value = taskList.value.filter(task => task.id !== taskId)
+const handleDeleteTask = async (taskId) => {
+  await deleteTask(taskId)
+  await fetchTasks()
 }
 
 const handleEditTask = (task) => {
@@ -54,12 +51,11 @@ const handleEditTask = (task) => {
   formData.value = { ...task }
 }
 
-const handleDoneTask = (taskId) => {
-  const taskIndex = taskList.value.findIndex(task => task.id === taskId)
-
-  if (taskIndex !== -1) {
-    taskList.value[taskIndex].status = 'done'
-  }
+const handleDoneTask = async (taskId, task) => {
+  task.status = 'done'
+  
+  await editTask(taskId, task);
+  await fetchTasks();
 }
 
 onMounted(async () => {

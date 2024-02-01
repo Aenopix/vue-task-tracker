@@ -32,5 +32,44 @@ export default function useTaskApi() {
     }
   }
 
-  return { taskList, fetchTasks, createTask }
+  const editTask = async (taskId, taskData) => {
+    try {
+      const response = await fetch(`${baseUrl}/edit-task/${taskId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(taskData),
+      })
+
+      if (response.ok) {
+        const updatedTask = await response.json()
+        return updatedTask
+      } else {
+        const errorMessage = await response.text()
+        throw new Error(errorMessage)
+      }
+    } catch (error) {
+      console.error('Network error:', error)
+    }
+  }
+
+  const deleteTask = async (taskId) => {
+    try {
+      const response = await fetch(`${baseUrl}/delete-task/${taskId}`, {
+        method: 'DELETE'
+      })
+
+      if (response.ok) {
+        console.log('Task deleted successfully!');
+      } else {
+        const errorMessage = await response.text();
+        throw new Error(errorMessage);
+      }
+    } catch (error) {
+      console.error('Error deleting task:', error.message);
+    }
+  }
+
+  return { taskList, fetchTasks, createTask, editTask, deleteTask }
 }

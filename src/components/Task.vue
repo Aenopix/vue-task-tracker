@@ -25,7 +25,7 @@ const statusEmoji = (status) => {
     <div class="buttons-container">
       <button class="edit-btn" @click="emit('handleEditTask', task)">Edit</button>
       <button class="delete-btn" @click="emit('handleDeleteTask', task.id)">Delete</button>
-      <button class="done-btn" @click="emit('handleDoneTask', task.id)">Done</button>
+      <button class="done-btn" @click="emit('handleDoneTask', task.id, task)">Done</button>
     </div>
   </li>
   <!-- <li class="task-item" v-for="task in taskList" :key="task.id">
