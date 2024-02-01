@@ -1,24 +1,10 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { vAutoAnimate } from '@formkit/auto-animate'
+import useTaskApi from '@/composables/useTaskApi'
 import Task from './components/Task.vue';
 
-const taskList = ref([{
-  id: 1,
-  description: 'Sopitfy song',
-  status: 'not-done',
-  title: 'Jesus Coming to Clean House'
-}, {
-  id: 2,
-  description: 'Finish the task list project',
-  status: 'in-progress',
-  title: 'Finish the project'
-}, {
-  id: 3,
-  description: 'Check the wood blanks in stair and outside',
-  status: 'done',
-  title: 'Check Wood Blanks'
-}])
+const { taskList, fetchTasks, createTask } = useTaskApi()
 
 const formData = ref({
   id: 0,
@@ -28,7 +14,7 @@ const formData = ref({
 })
 
 const isEditing = ref(false)
-const handleSubmit = () => {
+const handleSubmit = async () => {
   if (formData.value.id) {
     const editedTaskIndex = taskList.value.findIndex(task => task.id === formData.value.id);
 
@@ -41,13 +27,14 @@ const handleSubmit = () => {
     }
   } else {
     const newTask = {
-      id: Date.now(),
       description: formData.value.description,
       status: formData.value.status,
       title: formData.value.title
     };
 
-    taskList.value = [...taskList.value, newTask];
+    await createTask(newTask)
+    await fetchTasks()
+    // taskList.value = [...taskList.value, newTask];
   }
 
   formData.value = {
@@ -74,6 +61,10 @@ const handleDoneTask = (taskId) => {
     taskList.value[taskIndex].status = 'done'
   }
 }
+
+onMounted(async () => {
+  await fetchTasks()
+})
 </script>
 
 <template>
@@ -95,17 +86,6 @@ const handleDoneTask = (taskId) => {
     <ul class="task-list" v-auto-animate>
       <Task :task-list="taskList" @handle-edit-task="handleEditTask" @handle-delete-task="handleDeleteTask"
         @handle-done-task="handleDoneTask" />
-      <!-- <li class="task-item" v-for="task in taskList" :key="task.id">
-        <span class="task-id">{{ task.id }}</span>
-        <h3>{{ task.title }}</h3>
-        <p>{{ task.description }}</p>
-        <span class="status">{{ statusEmoji(task.status) }}</span>
-        <div class="buttons-container">
-          <button class="edit-btn" @click="handleEditTask(task)">Edit</button>
-          <button class="delete-btn" @click="handleDeleteTask(task.id)">Delete</button>
-          <button class="done-btn" @click="handleDoneTask(task.id)">Done</button>
-        </div>
-      </li> -->
     </ul>
   </main>
 </template>
