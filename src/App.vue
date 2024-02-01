@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { vAutoAnimate } from '@formkit/auto-animate'
+import Task from './components/Task.vue';
 
 const taskList = ref([{
   id: 1,
@@ -19,12 +20,6 @@ const taskList = ref([{
   title: 'Check Wood Blanks'
 }])
 
-const statusEmoji = (status) => {
-  if (status === 'not-done') return '❌'
-  if (status === 'in-progress') return '⚙️'
-  return '✔️'
-}
-
 const formData = ref({
   id: 0,
   description: '',
@@ -39,6 +34,9 @@ const handleSubmit = () => {
 
     if (editedTaskIndex !== -1) {
       taskList.value[editedTaskIndex] = { ...formData.value };
+      isEditing.value = false
+    } else {
+      alert(`No task found with id ${formData.value.id}, edit not succesful.`)
       isEditing.value = false
     }
   } else {
@@ -95,7 +93,9 @@ const handleDoneTask = (taskId) => {
     </form>
 
     <ul class="task-list" v-auto-animate>
-      <li class="task-item" v-for="task in taskList" :key="task.id">
+      <Task :task-list="taskList" @handle-edit-task="handleEditTask" @handle-delete-task="handleDeleteTask"
+        @handle-done-task="handleDoneTask" />
+      <!-- <li class="task-item" v-for="task in taskList" :key="task.id">
         <span class="task-id">{{ task.id }}</span>
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
@@ -105,7 +105,7 @@ const handleDoneTask = (taskId) => {
           <button class="delete-btn" @click="handleDeleteTask(task.id)">Delete</button>
           <button class="done-btn" @click="handleDoneTask(task.id)">Done</button>
         </div>
-      </li>
+      </li> -->
     </ul>
   </main>
 </template>
