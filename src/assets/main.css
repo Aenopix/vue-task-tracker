@@ -113,3 +113,7 @@ li {
 .done-btn {
   background-color: #4caf50;
 }
+
+button:disabled {
+  background-color: #d1d1d1;
+}

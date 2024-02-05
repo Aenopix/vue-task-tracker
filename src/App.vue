@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { vAutoAnimate } from '@formkit/auto-animate'
 import useTaskApi from '@/composables/useTaskApi'
-import Task from './components/Task.vue';
+import Task from './components/Task.vue'
 
 const { taskList, fetchTasks, createTask, editTask, deleteTask } = useTaskApi()
 
@@ -67,9 +67,9 @@ onMounted(async () => {
   <main>
     <form class="task-form" @submit.prevent="handleSubmit">
       <label for="title">Title</label>
-      <input type="text" id="title" v-model="formData.title" required />
+      <input type="text" id="title" v-model.trim="formData.title" required />
       <label for="description">Description</label>
-      <textarea name="descrtiption" id="description" v-model="formData.description" required></textarea>
+      <textarea name="descrtiption" id="description" v-model.trim="formData.description" required></textarea>
       <label for="status">Status</label>
       <select name="status" id="status" v-model="formData.status">
         <option value="not-done">To Do</option>
